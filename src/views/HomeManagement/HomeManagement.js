@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Input, Button, Space, DatePicker } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import { SearchOutlined, PlusOutlined, CalendarOutlined, UnorderedListOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons';
 
 
 import 'antd/dist/antd.css';
@@ -179,13 +179,13 @@ function HomeManagement(props) {
             dataIndex: 'type',
             key: 'type',
             ...getColumnSearchProps('type'),
-            width: '20%',
+            width: '10%',
         },
         {
             title: 'Prix/Nuit',
             dataIndex: 'prixNuit',
             key: 'prixNuit',
-            width: '20%',
+            width: '15%',
             ...getColumnSearchProps('prixNuit'),
         },
         {
@@ -195,7 +195,18 @@ function HomeManagement(props) {
             width: '20%',
             ...getColumnSearchProps('dsecription'),
         },
-
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => (
+                <Space size="middle">
+                    <Button type="primary" shape="circle" icon={<CalendarOutlined />} />
+                    <Button type="primary" shape="circle" icon={<UnorderedListOutlined />} />
+                    <Button type="primary" shape="circle" icon={<SettingOutlined />} />
+                    <Button type="primary" shape="circle" icon={<DeleteOutlined />} />
+                </Space>
+            ),
+        },
     ];
 
     return (
