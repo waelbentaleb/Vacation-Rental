@@ -11,8 +11,8 @@ const layout = {
     },
     wrapperCol: {
         span: 16,
-    },
-};
+    }
+}
 /* eslint-disable no-template-curly-in-string */
 
 const validateMessages = {
@@ -24,76 +24,46 @@ const validateMessages = {
     number: {
         range: '${label} must be between ${min} and ${max}',
     },
-};
+}
+
 /* eslint-enable no-template-curly-in-string */
 
-const HomeModalContent = () => {
-    const onFinish = (values) => {
-        console.log(values);
-    };
+function HomeModalContent(props) {
 
     return (
         <div>
 
-            <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-                <Form.Item
-                    name={['user', 'Referance']}
-                    label="Referance"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    name={['user', 'Region']}
-                    label="Region   "
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    name={['user', 'Type']}
-                    label="Type"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
+            <Form {...layout} name="nest-messages" onFinish={props.onAddHome} validateMessages={validateMessages}>
+                <Form.Item name='referance' label="Referance">
                     <Input />
                 </Form.Item>
 
-                <Form.Item
-                    name={['user', 'Prix']}
-                    label="Prix"
-                    rules={[
-                        {
-                            type: 'number',
-                            min: 0,
+                <Form.Item name="region" label="Region">
+                    <Input />
+                </Form.Item>
 
-                        },
-                    ]}
-                >
+                <Form.Item name="type" label="Type">
+                    <Input />
+                </Form.Item>
+
+                <Form.Item name='price' label="Price">
                     <InputNumber />
                 </Form.Item>
 
-                <Form.Item name={['user', 'introduction']} label="Description">
+                <Form.Item name='description' label="Description">
                     <Input.TextArea />
                 </Form.Item>
+
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    {/* <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit">
                         Valider
-        </Button> */}
+                    </Button>
                 </Form.Item>
+
             </Form>
         </div>
     );
 };
+
+
 export default HomeModalContent;

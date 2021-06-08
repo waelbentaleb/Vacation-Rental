@@ -7,54 +7,6 @@ import 'antd/dist/antd.css';
 import HomeModalContent from './components/HomeModalContent'
 
 
-const data = [
-    {
-        key: '1',
-        referance: "1011",
-        region: "Sahloul",
-        type: "s+2",
-        prixNuit: "130 dt",
-        dsecription: "haut stauding",
-
-    },
-    {
-        key: '2',
-        referance: "1012",
-        region: "Hammam Sousse",
-        type: "s+2",
-        prixNuit: "90 dt",
-        dsecription: "avec jardin",
-
-    },
-    {
-        key: '3',
-        referance: "1013",
-        region: "Hammam Sousse",
-        type: "s+0",
-        prixNuit: "50 dt",
-        dsecription: "---------",
-
-    },
-    {
-        key: '4',
-        referance: "1014",
-        region: "Khzema",
-        type: "s+1",
-        prixNuit: "70 dt",
-        dsecription: "---------",
-
-    },
-    {
-        key: '5',
-        referance: "1017",
-        region: "Kantawi",
-        type: "s+2",
-        prixNuit: "180 dt",
-        dsecription: "400 metre au plage",
-
-    },
-]
-
 const { RangePicker } = DatePicker;
 
 
@@ -68,6 +20,53 @@ function HomeManagement(props) {
     const [searchText, setSearchText] = useState('')
     const [searchedColumn, setSearchedColumn] = useState('')
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [data, setData] = useState([
+        {
+            key: '1',
+            referance: "1011",
+            region: "Sahloul",
+            type: "s+2",
+            price: "130 dt",
+            description: "haut stauding",
+
+        },
+        {
+            key: '2',
+            referance: "1012",
+            region: "Hammam Sousse",
+            type: "s+2",
+            price: "90 dt",
+            description: "avec jardin",
+
+        },
+        {
+            key: '3',
+            referance: "1013",
+            region: "Hammam Sousse",
+            type: "s+0",
+            price: "50 dt",
+            description: "---------",
+
+        },
+        {
+            key: '4',
+            referance: "1014",
+            region: "Khzema",
+            type: "s+1",
+            price: "70 dt",
+            description: "---------",
+
+        },
+        {
+            key: '5',
+            referance: "1017",
+            region: "Kantawi",
+            type: "s+2",
+            price: "180 dt",
+            description: "400 metre au plage",
+
+        },
+    ]);
 
 
     let searchInput
@@ -139,6 +138,71 @@ function HomeManagement(props) {
             ),
     });
 
+    const getPriceSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 5 }}>
+                <Input
+                    ref={node => {
+                        searchInput = node;
+                    }}
+                    placeholder={`Enter price interval`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                        Reset
+                    </Button>
+
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({ closeDropdown: false });
+                            setSearchText(selectedKeys[0])
+                            setSearchedColumn(dataIndex)
+                        }}
+                    >
+                        Filter
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) =>
+            record[dataIndex]
+                ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+                : '',
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => searchInput.select(), 100);
+            }
+        },
+        render: text =>
+            searchedColumn === dataIndex ? (
+                <Highlighter
+                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                    searchWords={[searchText]}
+                    autoEscape
+                    textToHighlight={text ? text.toString() : ''}
+                />
+            ) : (
+                text
+            ),
+    });
+
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         // this.setState({
@@ -169,6 +233,15 @@ function HomeManagement(props) {
         setIsModalVisible(false);
     };
 
+    const handleAddHome = (values) => {
+        console.log(values)
+
+        const newData = [...data, values]
+        setData(newData)
+
+        setIsModalVisible(false);
+    }
+
     const columns = [
         {
             title: 'Referance',
@@ -193,17 +266,17 @@ function HomeManagement(props) {
         },
         {
             title: 'Prix/Nuit',
-            dataIndex: 'prixNuit',
-            key: 'prixNuit',
+            dataIndex: 'price',
+            key: 'price',
             width: '15%',
-            ...getColumnSearchProps('prixNuit'),
+            ...getPriceSearchProps('price'),
         },
         {
             title: 'Description',
-            dataIndex: 'dsecription',
-            key: 'dsecription',
+            dataIndex: 'description',
+            key: 'description',
             width: '20%',
-            ...getColumnSearchProps('dsecription'),
+            ...getColumnSearchProps('description'),
         },
         {
             title: 'Action',
@@ -224,13 +297,15 @@ function HomeManagement(props) {
             <Space direction="vertical" size={12}>
                 <RangePicker />
             </Space>
+
             <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={showModal}>
                 Ajoute une maison
             </Button>
+
             <Table columns={columns} dataSource={data} />
 
             <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                <HomeModalContent />
+                <HomeModalContent onAddHome={(values) => { handleAddHome(values) }} />
             </Modal>
         </div>
     )
