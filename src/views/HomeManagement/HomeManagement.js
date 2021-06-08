@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Space, DatePicker } from 'antd';
 import Highlighter from 'react-highlight-words';
+import { Table, Input, Button, Space, DatePicker, Modal } from 'antd';
 import { SearchOutlined, PlusOutlined, CalendarOutlined, UnorderedListOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons';
 
-
 import 'antd/dist/antd.css';
+import HomeModalContent from './components/HomeModalContent'
 
 
 const data = [
@@ -60,10 +60,6 @@ const { RangePicker } = DatePicker;
 
 function HomeManagement(props) {
 
-
-
-
-
     // state = {
     //   searchText: '',
     //   searchedColumn: '',
@@ -71,6 +67,8 @@ function HomeManagement(props) {
 
     const [searchText, setSearchText] = useState('')
     const [searchedColumn, setSearchedColumn] = useState('')
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
 
     let searchInput
 
@@ -158,6 +156,18 @@ function HomeManagement(props) {
         setSearchText('')
     };
 
+    // Modal functions *********
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
 
     const columns = [
         {
@@ -211,14 +221,17 @@ function HomeManagement(props) {
 
     return (
         <div>
-
             <Space direction="vertical" size={12}>
                 <RangePicker />
             </Space>
-            <Button type="primary" shape="round" icon={<PlusOutlined />} size='large'>
+            <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={showModal}>
                 Ajoute une maison
-        </Button>
+            </Button>
             <Table columns={columns} dataSource={data} />
+
+            <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <HomeModalContent />
+            </Modal>
         </div>
     )
 

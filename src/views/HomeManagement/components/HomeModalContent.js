@@ -5,9 +5,6 @@ import 'antd/dist/antd.css';
 import { Form, Input, InputNumber, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
-
-
-
 const layout = {
     labelCol: {
         span: 8,
@@ -30,16 +27,14 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const HomeModal = () => {
+const HomeModalContent = () => {
     const onFinish = (values) => {
         console.log(values);
     };
 
     return (
         <div>
-            <Button style={{ float: 'right', display: 'block' }} type="primary" shape="circle" icon={<CloseOutlined />} />
-            <br />
-            <br />
+
             <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
                 <Form.Item
                     name={['user', 'Referance']}
@@ -93,12 +88,12 @@ const HomeModal = () => {
                     <Input.TextArea />
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button type="primary" htmlType="submit">
+                    {/* <Button type="primary" htmlType="submit">
                         Valider
-        </Button>
+        </Button> */}
                 </Form.Item>
             </Form>
         </div>
     );
 };
-export default HomeModal;
+export default HomeModalContent;
